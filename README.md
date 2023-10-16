@@ -17,7 +17,7 @@ open the cmd in the folder then run
 
 1. Open a terminal or command prompt and navigate to the project directory.
 2. Run the script: `pas searcher.py`
-3. Follow the prompts to enter your know password information to find all the relavent passwords.
+3. Follow the prompts to enter your known password information to find all the relavent passwords.
 
 ## Contributing
 
