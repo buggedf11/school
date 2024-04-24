@@ -1,6 +1,7 @@
 import itertools
 import time
 from tqdm import tqdm
+import threading
 
 # Define the set of letters and numbers
 letters = 'abcdefghijklmnopqrstuvwxyz'
@@ -23,16 +24,39 @@ total_combinations = len(combinations_with_numbers)
 # Create a progress bar
 progress_bar = tqdm(total=total_combinations, unit="combination")
 
-# Print all combinations and measure time
-start_time = time.time()
-for combo in combinations_with_numbers:
+# Define the processing function for each combination
+def process_combination(combo):
     # Process the combination
     # You can replace this line with your specific processing logic
     time.sleep(0.01)
     progress_bar.update(1)  # Update the progress bar
+
+# Define the worker function for each thread
+def worker():
+    while True:
+        try:
+            combo = combinations_with_numbers.pop(0)  # Get the next combination
+        except IndexError:
+            break  # No more combinations to process
+        process_combination(combo)
+
+# Define the number of threads to use
+num_threads = 4
+
+# Create and start the threads
+threads = []
+for _ in range(num_threads):
+    thread = threading.Thread(target=worker)
+    thread.start()
+    threads.append(thread)
+
+# Wait for all threads to finish
+for thread in threads:
+    thread.join()
+
+# Close the progress bar
 progress_bar.close()
-end_time = time.time()
 
 # Calculate the time it took to go through all combinations
-elapsed_time = end_time - start_time
+elapsed_time = time.time() - start_time
 print(f"Total time elapsed: {elapsed_time:.2f} seconds")
